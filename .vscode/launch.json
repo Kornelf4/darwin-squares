@@ -1,0 +1,11 @@
+{
+    "version": "0.1.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome",
+            "file": "e:\\fefe adat\\Dokumentumok\\akod\\procjam2024\\index.html"
+        }
+    ]
+}

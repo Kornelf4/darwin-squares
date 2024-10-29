@@ -7,7 +7,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas height="700", width="1300"></canvas>
+    <input type="button" onclick="isRunning = !isRunning" value="Start/Stop Simulation"><br>
+    <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
+    <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
+    <input type="button" value="-" onclick="UNIT -= 5"><input type="button" value="+" onclick="UNIT += 5">
+    Graphics: <input type="checkbox" checked id="graphics"><br>
+    Culling: <input type="checkbox" checked id="culling"><br>
+    Max organisms: <input type="number" id="maxOrg" value="250">
+    Max food: <input type="number" id="maxFood" value="800"><br>
+    Organism mutation chance: <input type="number" id="orgMutNum" value="5">
+    Cell mutation chance: <input type="number" id="cellMutNum" value="7">
+    Number of organisms: <div id="organismNum">0</div><br>
+    Number of foods: <div id="foodNum">0</div>
+    Turns: <div id="turnNum"></div>
+    Turns/s: <input type="number" id="speed"><br>
+    <input type="button" value="">
+    <div class="canvasCont">
+        <canvas height="700", width="700" id="simCanvas"></canvas>
+        <canvas height="700", width="700" id="diaCanv"></canvas>
+    </div>
+    
+
 </body>
 </html>
 <script src="cells.js"></script>
@@ -20,3 +40,4 @@
 <script src="random.js"></script>
 <script src="collide.js"></script>
 <script src="main.js"></script>
+<script src="diagram.js"></script>

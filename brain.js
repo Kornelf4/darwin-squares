@@ -25,9 +25,9 @@ class BrainNode {
                     }
                 }
                 let exeFunc = new Function("exe", "return " + exe);
-                if(exeFunc(exe) < 0) {
+                if (exeFunc(exe) < 0) {
                     this.value = 0;
-                } else if(exeFunc(exe) > 1) {
+                } else if (exeFunc(exe) > 1) {
                     this.value = 1;
                 } else {
                     this.value = exeFunc(exe);
@@ -43,23 +43,37 @@ class BrainNode {
                     }
                 }
                 let exeFunc = new Function("exe", "return " + exe)
-                if(exeFunc(exe) < 0) {
+                if (exeFunc(exe) < 0) {
                     this.value = 0;
-                } else if(exeFunc(exe) > 1) {
+                } else if (exeFunc(exe) > 1) {
                     this.value = 1;
                 } else {
                     this.value = exeFunc(exe);
                 }
             }
             if (this.type == "fromCellInputter") {
-                this.value = this.inputsFrom.value;
+                if (Array.isArray(this.inputsFrom)) {
+                    /*now*/this.value = 0;
+                    for (let i = 0; i < this.inputsFrom.lenght; i++) {
+                        this.value += this.inputsFrom[i].value;
+                    }/*now*/
+                } else {
+                    this.value = this.inputsFrom.value;
+                }
                 for (let i = 0; i < this.outputsTo.length; i++) {
-                    if(this.outputsTo[i] === undefined) continue;
-                    this.outputsTo[i].inputsFrom = this;
+                    if (this.outputsTo[i] === undefined) continue;
+                    //was: this.outputsTo[i].inputsFrom = this;
+                    if (!this.outputsTo[i].inputsFrom.includes(this)) {
+                        this.outputsTo[i].inputsFrom.unshift(this);
+                    }
                 }
             }
             if (this.type == "toCellOutputter") {
-                this.value = this.inputsFrom.value;
+                //was: this.value = this.inputsFrom.value;
+                /*now*/this.value = 0;
+                for (let i = 0; i < this.inputsFrom.length; i++) {
+                    this.value += this.inputsFrom[i].value;
+                }/*now*/
                 this.outputsTo.activationLevel = this.value;
             }
         }
@@ -67,11 +81,11 @@ class BrainNode {
 }
 function testPairing(brain) {
     let used = [];
-    for(let i = 0; i < brain.length;i++) {
-        if(brain[i].type == "fromCellInputter") {
-            for(let i2 = 0; i2 < brain.length; i2++) {
-                if(i == i2) continue;
-                if(brain[i2].type == "toCellOutputter" && !used.includes(brain[i2])) {
+    for (let i = 0; i < brain.length; i++) {
+        if (brain[i].type == "fromCellInputter") {
+            for (let i2 = 0; i2 < brain.length; i2++) {
+                if (i == i2) continue;
+                if (brain[i2].type == "toCellOutputter" && !used.includes(brain[i2])) {
                     brain[i].outputsTo.unshift(brain[i2]);
                     used.unshift(brain[i2]);
                 }

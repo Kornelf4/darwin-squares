@@ -119,10 +119,6 @@ function renderOrganisms() {
 }
 
 function tick() {
-    /*canvas.width = window.innerWidth / 2.2;
-    canvas.height = window.innerHeight / 1.5;
-    diagramCanv.width = window.innerWidth / 2.2;
-    diagramCanv.height = window.innerHeight / 1.5;*/
     var canvasXsize = parseInt(canvas.width);
     var canvasYsize = parseInt(canvas.height);
     if (COUNTER % 5 == 0 && isRunning) {
@@ -130,8 +126,6 @@ function tick() {
         updateData();
         displayDia();
     }
-    document.getElementById("organismNum").innerText = organisms.length;
-    document.getElementById("foodNum").innerText = plants.length;
     mutationRate = document.getElementById("cellMutNum").value;
     mutationRate2 = document.getElementById("orgMutNum").value;
     if (document.getElementById("culling").checked) {
@@ -195,17 +189,5 @@ function setSpeed(e) {
 
     }
 }
-
-document.getElementById("speed").addEventListener("keypress", function (e) {
-    console.log("a")
-    if (e.key == "Enter") {
-        FPS = document.getElementById("speed").value;
-
-        timer = null;
-        //timer = setInterval("tick()", 1000 / FPS);
-        timer = window.requestAnimationFrame(tick);
-        console.log(timer)
-    }
-})
 
 start()

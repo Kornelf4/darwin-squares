@@ -1,9 +1,161 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    background-color: #899dbc
+}
+
 .canvass {
     border: 5px solid black;
     flex: 1;
 }
+
 .canvasCont {
-    /*width: 100%;
-    height: 100vh;*/
     display: inline-flex;
+}
+
+input[type="button"] {
+    border-radius: 10px;
+    background-color: rgb(43, 82, 83);
+    border: 3px solid blue;
+    color: white;
+    margin: 4px;
+    padding: 5px;
+    width: 40%;
+    transition-duration: 100ms;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+}
+
+input[type="button"]:hover {
+    box-shadow: 0px 0px 5px white;
+    background-color: rgb(201, 233, 234);
+    color: black
+}
+
+input[type="button"]:active {
+    border-color: antiquewhite;
+}
+
+input[value="+"],
+input[value="-"] {
+    width: 40px;
+    height: 40px;
+}
+
+input[value="+"] {
+    margin-left: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+input[value="-"] {
+    margin-right: 0px;
+    margin-left: 2%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.inlineContainer {
+    display: inline-flex;
+    background: radial-gradient(rgba(92, 220, 178, 0.845), rgba(31, 85, 67, 0.644));
+    box-shadow: 0px 0px 5px white;
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    color: white;
+    text-align: center;
+    width: 40%;
+    margin: 2%;
+    transition-duration: 200ms;
+}
+
+.inlineContainer:hover {
+    box-shadow: 0px 0px 15px white;
+}
+
+.checkboxContainer {
+    background: radial-gradient(rgba(92, 220, 178, 0.845), rgba(31, 85, 67, 0.644));
+    box-shadow: 0px 0px 5px white;
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    color: white;
+    display: block;
+    width: 35%;
+    margin: 2%;
+    transition-duration: 200ms;
+}
+
+.smol1 {
+    border-bottom: 5px solid white;
+    padding-bottom: 15px;
+    display: inline-flex;
+}
+
+.smol2 {
+    padding-bottom: 0px;
+    padding-top: 20px;
+    display: inline-flex;
+}
+
+.checkboxContainer:hover {
+    box-shadow: 0px 0px 15px white;
+}
+
+.inputContainer input[type="number"] {
+    appearance: none;
+    border: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 4px solid blue;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em blue;
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.sizer {
+    display: flex;
+}
+body {
+    display: flexbox;
+    justify-content: center;
+}
+.canvass {
+    border-radius: 11px;
+    border: 5px solid grey
+}
+.canvas1 {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.canvas2 {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }

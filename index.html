@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Darwin Squares. The game without players.</h1>
-    <input type="button" onclick="isRunning = !isRunning" value="Start/Stop Simulation"><br>
-    <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
-    <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
-    <input type="button" value="-" onclick="UNIT -= 5"><input type="button" value="+" onclick="UNIT += 5">
-    Graphics: <input type="checkbox" checked id="graphics"><br>
-    Culling: <input type="checkbox" checked id="culling"><br>
-    Max organisms: <input type="number" id="maxOrg" value="250"> <br>
-    Max food: <input type="number" id="maxFood" value="800"><br>
-    Organism mutation chance: <input type="number" id="orgMutNum" value="5"> <br>
-    Cell mutation chance: <input type="number" id="cellMutNum" value="7"><br>
-    Growing energy cost: <input type="number" onchange="cellCost = parseInt(this.value)" value="4">
-    Number of organisms: <div id="organismNum">0</div><br>
-    Number of foods: <div id="foodNum">0</div>
-    Turns: <div id="turnNum"></div>
-    Turns/s: <input type="number" id="speed"><br>
-    Size of world: <input type="number" onchange="WORLDSIZE = parseInt(this.value)"><br>
+
+    <div class="checkboxContainer">
+        <div class="smol1">
+            Graphics: <input type="checkbox" checked id="graphics" class="check">
+        </div><br>
+        <div class="smol2">
+            Culling: <input type="checkbox" checked id="culling" class="check">
+        </div>
+    </div>
+    <div class="checkboxContainer inputContainer">
+        <div>Max organisms: <input type="number" id="maxOrg" value="250"></div> <br>
+        <div>Max food: <input type="number" id="maxFood" value="800"></div><br>
+        <div>Organism mutation chance: <input type="number" id="orgMutNum" value="5"></div> <br>
+        <div>Cell mutation chance: <input type="number" id="cellMutNum" value="7"></div><br>
+        <div>Growing energy cost: <input type="number" onchange="cellCost = parseInt(this.value)" value="4"></div><br>
+        <div>Size of world: <input type="number" onchange="WORLDSIZE = parseInt(this.value)"></div><br>
+    </div>
+    <div class="sizer">
+        <div class="inlineContainer">
+            <input type="button" value="-" onclick="UNIT -= 5"><input type="button" value="+" onclick="UNIT += 5">
+            <input type="button" onclick="isRunning = !isRunning" value="Start/Stop Simulation"><br>
+            <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
+            <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
+        </div>
+    </div><br>
     <div class="canvasCont">
-        <div class="canvass" id="1">
+        <div class="canvass canvas2" id="1">
             <canvas id="simCanvas"></canvas>
         </div>
-        <div class="canvass" id="2">
+        <div class="canvass canvas1" id="2">
             <canvas id="diaCanv"></canvas>
         </div>
     </div>
 </body>
+
 </html>
 <script src="external.js"></script>
 <script src="cells.js"></script>

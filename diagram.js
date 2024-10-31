@@ -3,17 +3,20 @@ var timeline = [];
 var space = 5;
 var measure = 1.5;
 var maxData = Math.floor(canvasXsize / space);
-ctx2.lineWidth = 3
-ctx2.font = "25px Serif"
+ctx2.lineWidth = 3;
+ctx2.font = "25px Serif";
 
 var moverCells = 0;
 var membranCells = 0;
-
+var energySum = 0;
+var brainSize = 0;
 var cellCounts = {};
 var diagramColors = {
     nucleus: "yellow",
     reproduction: "red",
-    plantCount: "darkgreen"
+    plantCount: "darkgreen",
+    avarangeEnergy: "Magenta",
+    intIndex: "MediumPurple"
 };
 
 class Note {
@@ -24,6 +27,7 @@ class Note {
     }
 }
 function updateData() {
+    var maxData = Math.floor(canvasXsize / space);
     while (timeline.length > maxData) {
         timeline.splice(0, 1);
     }
@@ -34,6 +38,8 @@ function takeNote() {
     }
     moverCells = 0;
     membranCells = 0;
+    brainSize = 0;
+    energySum = 0;
     for (i in cellCounts) {
         cellCounts[i] = 0;
     }
@@ -41,13 +47,15 @@ function takeNote() {
         for (let i2 = 0; i2 < organisms[i].cells.length; i2++) {
             cellCounts[organisms[i].cells[i2].name]++;
         }
+        brainSize += organisms[i].brain.length;
+        energySum += organisms[i].energy;
     }
-    timeline.push(new Note({ dayColor: timeColor, plantCount: plants.length, ...cellCounts }));
+    timeline.push(new Note({ dayColor: timeColor, plantCount: plants.length, avarangeEnergy: (energySum / organisms.length).toFixed(0), intIndex: brainSize / 5 + cellCounts.adder + cellCounts.not + cellCounts.cellSensor + cellCounts.random + cellCounts.plantSensor, ...cellCounts }));
 }
 function displayDia() {
 
     ctx2.clearRect(0, 0, canvasXsize, canvasYsize);
-    
+
     for (i in timeline[timeline.length - 1]) {
         for (let i2 = 0; i2 < timeline.length; i2++) {
             if (timeline[i2 + 1] === undefined) continue;
@@ -67,10 +75,16 @@ function displayDia() {
     let countero = 0;
     for (i in diagramColors) {
         ctx2.fillStyle = diagramColors[i];
-        ctx2.fillRect(0, countero * 20, 20, 20)
+        ctx2.fillRect(0, countero * 20, 20, 20);
+        console.log(i)
+        if (i != "plantCount" && i != "avarangeEnergy" && i != "intIndex" && i != "adder") {
+            let toDraw = new Image(20, 20);
+            toDraw.src = "sprites/" + i + "/" + i + "-" + 1 + ".png";
+            ctx2.drawImage(toDraw, 20, countero * 20, 20, 20)
+        }
         ctx2.fillStyle = "black";
-        ctx2.fillText(i + ": ", 25, countero * 20 + 20, 250);
-        ctx2.fillText(timeline[timeline.length - 1][i], 155, countero * 20 + 20);
+        ctx2.fillText(i + ": ", 50, countero * 20 + 20, 130);
+        ctx2.fillText(timeline[timeline.length - 1][i], 180, countero * 20 + 20);
         countero++;
     }
 }

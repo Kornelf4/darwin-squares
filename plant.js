@@ -7,6 +7,6 @@ class Plant {
         this.render = (context) => {
             context.fillStyle = this.color;
             context.fillRect(camera.getRelativeX(this.x * UNIT), camera.getRelativeY(this.y * UNIT), this.size * UNIT, this.size * UNIT);
-        } 
+        }
     }
 }

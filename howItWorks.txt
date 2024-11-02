@@ -1,0 +1,110 @@
+DARWIN SQUARES. 
+The game without players
+
+What is this?
+    This is a zero player game made for hte PROCJAM 2024
+    This is an is a multicellural ecosystem simulator, maybe an experiment. Shows the signals of evolution.
+
+How it's made?
+    This game is made by me (Kornelf) in a week, and the music is made by Mario Alexander.
+    I used plain JavaScript (canvas drawing) to make this, I don't used external tools, code or artwork.
+    It's open source: <link>
+
+How it WORKS?
+    Good question. I'll try to explain.
+    
+    A játékom színhelye egy magába visszahajló, így véges univerzum, ha úgy tetszik, egy gömb felszínén.
+    A gömb felszínén különálló rendszerek működnek, saját szabályrenszereik alapján. A későbbiekben organizmusoknak fogom nevezni ezeket.
+    Az organizmusok szabályrendszereit a későbbiekben viselkedésnek vagy agynak fogom nevezni.
+
+    Tehát miből áll egy organizmus?
+        Agy: az organizmus viselkedését határozza meg. Később bővebben.
+        Cellák: az organizmusok részei, szervei. Feladatokat hajtanak végre a tipusuktól függően.
+        Energia: az organizmusok éltereje, felhasználhatják mozgásra és egyéb akciókra.
+
+    Az organizmus életciklusa:
+        Az organizmusok az első generáció után, más organizmusok reproduction celláiból keletkeznek.
+        Először csak egy sejtmagból állnak, energiaszintjük magas.
+        A sejtmagok elkezdik felépíteni az organizmust az örökölt tervek alapján.
+        Ha elég energiát gyűjtenek, utódot hozhatnak létre, és továbbörökíthetik a génjeiket (viselkedés + felépítés)
+
+    Cellatipusok:
+        Elsődleges:
+            Sejtmag: a genetikai informázió tárolója, ha elpusztula, akkor az organizmus is
+                ki: 1
+                be: bármi (lényegtelen)
+            Zöld színtest: lassan de biztosan energiát termel az organizmusnak. Este nem effektív
+                ki: napszak 0 és 1 között. A 0 az este, 1 a nappal 
+                be: bármi (lényegtelen)
+            Reproduction: az organizmus szaporodási szerve. E nélkül az organizmus kihal. Energiát igényel
+                ki: 0
+                be: Az organizmus mindig hagy utódot, ha tud, tehát lényegtelen
+            Membran: az organizmus táplálkozási szerve. Tápanyapot (kis zöld négyzetek) képes ezzel felvenni, hogy energiát szerezzen
+                ki: 1
+                be: bármi (lényegtelen)
+            Ostor: az organizmus mozgásszerve. Ha több van belőle, az organizmus a mozgásverkorok összege felé mozog. Kevés energiát használ, és jelet igényel.
+                ki: 0
+                be: célsebesség
+
+        Másodlagos:
+            Emésztő űröcske (eater): más organizmusok közeli celláit pustítja el, érintkezéskor. Ekkor jelentős energiát termel az organizmusnak. Jelet igányel.
+                ki: 0
+                be: Pusztít-e más cellákat (ha tud) 1: igen, 0: nem
+            Adder: logikai cella. Összeadja a beérkező jeleket, és felveszi az értékét.
+                ki: bemenetek összege
+                be: bármi, lehet több is
+            Cell sensor (Eye): egyirányú cella. A legközelebbi cella távolságát veszi fel egy irányban, 0-tól 1-ig. Látótávolsága 10 cella
+                ki: a legkizelebbi cella távolsága az adott irányban, 0 és 1 között. 0 közvetlenül a cella előtt, 1 látótávolságon kívül
+                be: bármi (lényegtelen)
+            Not: logikai cella. Ősszeadja majd megfordítja a kerekített beérkező jeleket, és felveszi az értékét. Például ha 1 érkezik, 0 értéket veszi fel.
+                ki: Például ha 1 érkezik, 0 értéket veszi fel
+                be: bármi
+            Plant sensor: a cell sensorhoz hasonló, csak nem a cellákat érzékel, hanem a tápanygokat.
+                ki: a legkizelebbi tápanyag távolsága az adott irányban, 0 és 1 között. 0 közvetlenül a cella előtt, 1 látótávolságon kívül
+                be: bármi (lényegtelen)
+            Random: logikai cella. 0 és 1 kézotti random értéket vesz fel.
+                ki: random érték 0 és 1 között
+                be: bármi (lényegtelen)
+
+    Agy működése:
+        Ez egy leegyszerűsített model, aki szeretne többet tudni, nézzen meg a kódot github-on :P
+        Az agy csomópontokból áll, amelyek kölcsönhatásban állnak egymással és az organizmus celláival
+        Agy agycsomópontok felépítése, kapcsolatai öröklődnek
+        Vegyünk egy példát. Van egy négycellás organiznus így:
+        Egy ostoros cella, egy membrán, egy sejtmag, egy 'not' cella, zöld színtest.
+        A zöld színtest értékét lekéri a not cella, annak értékét pedig lekéri az ostoros cella.
+        Vagyis nappal a zöld színtest 1 értéket veszi fel a 'not' pedig ennek következtében 0 értéket kap. A ostor amikor 0 érkéket vesz fel, vagyis nem mozog, és nem fogyaszt energiát.
+        Este fordítva. Este az organizmus nem tud fotoszintetizálni, de ilyenkor mozog és tápanyagot gyűjt.
+        Ez egy elég életképes organizmus, tehát életben marad, és továbbörökíti viselkedését felépítését. Továbbörökítené, ha lenne reproductation cellája, ennek híján az organizmus kihal :(
+
+    Mutációk:
+        A biológiai változatosság forrásai. És nem, nem fognak csápot növeszteni.
+        Minden új organizmus génjeiben kisebb változások történhetnek, mind a viselkedésben és felépítésben.
+        Ha a változás előnyös, az organizmus fennmarad
+
+    Irányítás:
+        WASD-val mozgathatod a kamerát, a + gombbal nagyíthatsz a - gombbal kicsinyíthetsz
+
+    Beállítások:
+        Graphics: a hosszabb szimulációkat fel tudod gyorsítani, ha kikapcsolod a grafikát
+        Culling: kevésbé kiegyensúlyozott szimulációkban, hogy megakadályozd a túlszaporulatot, beállíthatsz egy max organizmusszámot, és tápanyagszámot
+        Organism mutation chance: meghatározza hogy az organizmus génjei mekkora eséllyel változnak meg szaporodáskor
+        Cell mutation chance: maghatározza hogy az organizmus minden cellája mekkora eséllyel változik meg
+        Growing energy cost: nemcsak minden cella energiaköltségét határozza meg, de az organizmusok túlélési nehézségét is
+        Size of world: meghatározza hogy a játékterület oldalainak hosszát cellákban
+
+    Statisztika:
+        A jobb oldali vásznon láthatod a statisztikai adatokat.
+        Itt láthatod a különböző cellák aktuális számát
+        plantCount: Az aktuális elérhető tápanyagok számat
+        avarangeEnergy: Az összes organizmus eneriájának összege eloszva az organizmusok számával
+        intIndex: Az összes csomópontok összege oszve 5-tel, plusz a logikai és szenzorcellák száma
+
+    Konklúzió:
+        Ez a szimuláció nem hivatott szimulálni a Földi körünmányeket, vagy akár földihez hasonló organizmusokat.
+        Sok eset van amikor az organizmusok kihalnak. Például: 
+            Este kihalhatnak a növényszerű, kevésbé hatékony organizmusok.
+            Energiahiány. Ha nincs elég energiájuk, az organizmusok nem tudnak szaporodni, így kihalnak.
+            Ha túl sok ragadozó van, a prédafajok elfogyhatnak, így a ragadozó fajok is kihalnak.
+            Kiegyensúlyozatlan szimuláció vagy programhiba. Számtalan oka lehet annak hogy ez organizmusok kihalnak. A szimuláció fejlestés alatt áll.
+        

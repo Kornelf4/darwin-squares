@@ -13,13 +13,13 @@ var FPS = 100;
 var UNIT = 5;
 var graphics = true;
 var WORLDSIZE = 110;
-var animSpeed = 50;
+var animSpeed = 15;
 var mutationRate = 5;
 var mutationRate2 = 5;
 var COUNTER = 0;
 var isRunning = false;
 var cellCost = 4;
-var cellTypes = [PhotoCell, NotCell, MembranCell, Eater, Whip, Eye, Adder, RandomCell, PlantEye, Eye, Eater, Whip, Whip, Whip, Eater, Eye, MembranCell, Whip];
+var cellTypes = [PhotoCell, NotCell, MembranCell, Eater, Whip, Eye, Adder, RandomCell, PlantEye, Eye, Eater, Whip, Whip, Whip, Eye, MembranCell, Whip];
 var time = 0;
 var dayLength = 8000;
 var timeColor = 255;
@@ -188,6 +188,11 @@ function setSpeed(e) {
     if (e.key) {
 
     }
+}
+
+function spectate() {
+    let randomOrg = organisms[randomNumber(0, organisms.length - 1)];
+    camera.spectate = randomOrg;
 }
 
 start()

@@ -54,17 +54,15 @@ class Organism {
         }
         this.update = () => {
             for(let i = 0; i < this.cells.length; i++) {
-                //this.energy -= 0.7;
+                this.energy -= 0.22;
                 if(this.cells[i].age > 10000) {
                     this.cells.splice(i, 1)
                 }
             }
-            //console.log("energy: " + this.energy)
-            if (this.energy < 2 || this.energy > 10000) {
+            if (this.energy < 5 || this.energy > 10000) {
                 for(let i = 0; i < this.cells.length; i++) {
                     plants.unshift(new Plant(this.cells[i].x, this.cells[i].y, 0.5));
                 }
-                //console.log(this.energy)
                 organisms.splice(organisms.indexOf(this), 1);
             }
             let alive = false;
@@ -119,12 +117,8 @@ class Organism {
                         for (let i = 0; i < this.blueprint.length; i++) {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y - 1 == this.blueprint[i].y + this.nucleusLoc.y) {
-                                /*for (let i2 = 0; i2 < this.cells.length; i2++) {
-                                    if (JSON.stringify(new this.blueprint[i].inst(builtCell.x, builtCell.y - 1)) == JSON.stringify(this.cells[i2])) {
-                                        continue;
-                                    }
-                                }*/
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y - 1, age: 1000 }, organisms, this)) {
+                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y - 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -138,12 +132,8 @@ class Organism {
                         for (let i = 0; i < this.blueprint.length; i++) {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x + 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
-                                /*for (let i2 = 0; i2 < this.cells.length; i2++) {
-                                    if (JSON.stringify(new this.blueprint[i].inst(builtCell.x + 1, builtCell.y)) == JSON.stringify(this.cells[i2])) {
-                                        continue;
-                                    }
-                                }*/
                                 if (!collideCell({ x: builtCell.x + 1, y: builtCell.y, age: 1000 }, organisms, this)) {
+                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x + 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -157,18 +147,13 @@ class Organism {
                         for (let i = 0; i < this.blueprint.length; i++) {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y + 1 == this.blueprint[i].y + this.nucleusLoc.y) {
-                                /*for (let i2 = 0; i2 < this.cells.length; i2++) {
-                                    if (JSON.stringify(new this.blueprint[i].inst(builtCell.x, builtCell.y + 1)) == JSON.stringify(this.cells[i2])) {
-                                        continue;
-                                    }
-                                }*/
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y + 1, age: 1000 }, organisms, this)) {
+                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y + 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
                                     this.energy -= cellCost;
                                 }
-
                             }
                         }
                     }
@@ -176,12 +161,8 @@ class Organism {
                         for (let i = 0; i < this.blueprint.length; i++) {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x - 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
-                                /*for (let i2 = 0; i2 < this.cells.length; i2++) {
-                                    if (JSON.stringify(new this.blueprint[i].inst(builtCell.x - 1, builtCell.y)) == JSON.stringify(this.cells[i2])) {
-                                        continue;
-                                    }
-                                }*/
                                 if (!collideCell({ x: builtCell.x - 1, y: builtCell.y, age: 1000 }, organisms, this)) {
+                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x - 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -203,7 +184,7 @@ class Organism {
                 for (let i2 = 0; i2 < plants.length; i2++) {
                     if (plants[i2] === undefined) continue;
                     if (checkAABBCollision(this.cells[i], plants[i2]) && this.cells[i].name == "membran") {
-                        this.energy += (cellCost * 6 + cellCost * 5) /4;
+                        this.energy += (cellCost * 6 + cellCost * 5) / 2;
                         plants.splice(i2, 1)
                     }
                 }

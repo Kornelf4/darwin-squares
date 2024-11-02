@@ -50,7 +50,7 @@ function takeNote() {
         brainSize += organisms[i].brain.length;
         energySum += organisms[i].energy;
     }
-    timeline.push(new Note({ dayColor: timeColor, plantCount: plants.length, avarangeEnergy: (energySum / organisms.length).toFixed(0), intIndex: brainSize / 5 + cellCounts.adder + cellCounts.not + cellCounts.cellSensor + cellCounts.random + cellCounts.plantSensor, ...cellCounts }));
+    timeline.push(new Note({ dayColor: timeColor, plantCount: plants.length, avarangeEnergy: (energySum / organisms.length).toFixed(0), intIndex: Math.round(((brainSize / 5 + cellCounts.adder + cellCounts.not + cellCounts.cellSensor + cellCounts.random + cellCounts.plantSensor) / organisms.length)*130), ...cellCounts }));
 }
 function displayDia() {
 
@@ -76,7 +76,6 @@ function displayDia() {
     for (i in diagramColors) {
         ctx2.fillStyle = diagramColors[i];
         ctx2.fillRect(0, countero * 20, 20, 20);
-        console.log(i)
         if (i != "plantCount" && i != "avarangeEnergy" && i != "intIndex" && i != "adder") {
             let toDraw = new Image(20, 20);
             toDraw.src = "sprites/" + i + "/" + i + "-" + 1 + ".png";

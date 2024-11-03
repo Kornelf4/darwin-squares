@@ -24,6 +24,11 @@ var time = 0;
 var dayLength = 8000;
 var timeColor = 255;
 var timePart = "day";
+var musicAudio = new Audio("audio/game.mp3");
+var bubble = new Audio("audio/bubbles.wav");
+var bubbleTimer = 0;
+var bubbleEnabled = false;
+musicAudio.loop = true;
 var organisms = [
 ];
 var plants = [];
@@ -119,6 +124,7 @@ function renderOrganisms() {
 }
 
 function tick() {
+    
     var canvasXsize = parseInt(canvas.width);
     var canvasYsize = parseInt(canvas.height);
     if (COUNTER % 5 == 0 && isRunning) {
@@ -139,6 +145,13 @@ function tick() {
 
     graphics = document.getElementById("graphics").checked;
     if (isRunning) {
+        bubbleTimer++;
+        if(bubbleTimer > 100) {
+            bubbleTimer = 0;
+            if(randomNumber(0, 100) < 20) {
+                bubble.play();
+            }
+        }
         ctx.clearRect(0, 0, canvasXsize, canvasYsize);
         if (graphics) renderPlants();
         if (graphics) camera.update();
@@ -193,6 +206,13 @@ function setSpeed(e) {
 function spectate() {
     let randomOrg = organisms[randomNumber(0, organisms.length - 1)];
     camera.spectate = randomOrg;
+}
+
+function setMusic(elem) {
+    if(elem.checked) {
+        musicAudio.play();
+        bubbleEnabled = true;
+    }
 }
 
 start()

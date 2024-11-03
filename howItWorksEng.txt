@@ -1,0 +1,103 @@
+DARWIN SQUARES. 
+The game without players
+
+Credits:
+    kornelf (me): wrote all the code
+    fefe: artwork and logo
+    Mario Alexander: composed music for the game
+
+What is this?
+    This is a zero player game made for the PROCJAM 2024
+    This is a multicellural ecosystem simulator, maybe an experiment. Shows the signals of evolution and natural selection.
+
+How it's made?
+    This game is made by me (Kornelf) in a week, and the music is made by Mario Alexander.
+    I used plain JavaScript (canvas drawing) to make this. All assets and code are made on the jam.
+    It's open source: https://github.com/Kornelf4/darwin-squares
+
+How it WORKS?
+    Good question. I'll try to explain.
+
+    On the surface of the sphere are separate systems, each with its own set of rules. In what follows I will call them organisms.
+    I will later call the organisms' systems of rules behaviour or brains.
+
+    So what does an organism consist of?
+        Brain: it determines the behaviour of the organism. More on this later.
+        Cells: the parts or organs of the organism. They perform functions depending on their type.
+        Energy: used for movement and other actions.
+
+    Life cycle of an organism:
+        After the first generation, organisms arise from the reproductive cells of other organisms.
+        Initially, they consist of only one nucleus and have a high energy content.
+        The cell nuclei start to build the organism according to the inherited plan.
+        If they accumulate enough energy, they can produce offspring and pass on their genes (behaviour + structure).
+
+    Cell types:
+        Primary:
+            Cell nucleus: storage of genetic information, if destroyed, so is the organism
+                out: 1
+                in: anything (irrelevant)
+            Green colored body: slowly but surely producing energy for the organism. In the evening, not effective
+                out: time of day between 0 and 1. 0 is evening, 1 is day 
+                in: anything (irrelevant)
+            Reproduction: reproductive organ of the organism. Without it, the organism dies out. Requires energy
+                out: 0
+                in: The organism always leaves offspring if it can, so irrelevant
+            Membrane: the organism's organ of nutrition. It can take up nutrients (small green squares) to obtain energy
+                out: 1.
+                in: anything (irrelevant)
+            Whip: organ of locomotion of the organism. If there are more of them, the organism moves towards the sum of the movement times. It uses little energy and requires a signal.
+                out: 0
+                in: target speed
+
+        Secondary:
+            Digestive eater: eats nearby cells of other organisms on contact. It then produces significant energy for the organism. Vomits signal.
+                out: 0
+                in: Does it destroy other cells (if it can) 1: yes, 0: no
+            Adder: logic cell. It adds up the incoming signals and takes its value.
+                out: sum of inputs
+                in: anything, can be more than one
+            Cell sensor (Eye): one-way cell. Takes the distance of the nearest cell in one direction, from 0 to 1. Range of view 10 cells
+                out: the distance of the nearest cell in a given direction, 0 to 1. 0 directly in front of the cell, 1 out of line of sight
+                in: anything (irrelevant)
+            Not: logical cell. It then inverts the rounded incoming signals and takes the value. For example, if 1 is received, it takes a value of 0.
+                out: For example, if 1 is received, it takes a value of 0
+                in: anything
+            Plant sensor (eye): similar to the cell sensor, except that it does not detect cells, but the plant nut.
+                out: the distance of the nearest nutrient in the given direction, between 0 and 1. 0 directly in front of the cell, 1 out of sight
+                in: anything (irrelevant)
+            Random: logical cell. 0 and 1 take a random value manually.
+                out: random value between 0 and 1
+                in: anything (irrelevant)
+
+    How the brain works:
+        This is a simplified model, if you want to know more, write me on discord or check out the code on github :P
+        The brain consists of nodes that interact with each other and with the cells of the organism.
+        Brain nodes are structured, their connections are inherited
+        Let's take an example. We have a four-cell organism like this:
+        A whip cell, a membrane, a nucleus, a 'not' cell, a green colored body.
+        The value of the green colour body is read by the 'not' cell and its value is read by the 'whip' cell.
+        In other words, during the day the green body takes on a value of 1 and the 'not' body takes on a value of 0. When the whip takes up 0 coins, it is not moving and consumes no energy.
+        In the evening, it is the other way round. In the evening the organism cannot photosynthesise, but it is moving and gathering nutrients.
+        It's a fairly viable organism, so it stays alive and inherits its behavioral structure. It would pass on if it had a reproductive cell, but without one the organism dies out :(
+
+    Mutations:
+        Sources of biological diversity. And no, they will not grow tentacles.
+        Small changes can occur in the genes of any new organism, both in behaviour and structure.
+        If the change is beneficial, the organism will survive
+
+    Control:
+        WASD to move the camera, + to zoom in and - to zoom out
+
+    Settings:
+        Graphics: you can speed up longer simulations by turning off graphics
+        Culling: in less balanced simulations, to prevent overcrowding, you can set a max organism count and nutrient count
+        Organism mutation chance: determines the chance that the genes of an organism will mutate during reproduction
+        Cell mutation chance: determines the chance that each cell in the organism will mutate
+        Growing energy cost: determines not only the energy cost of each cell, but also the survival difficulty of the organism
+        Size of world: determines how long the sides of the game area are in cells
+
+This project is under intensive development. Updates soon.
+If you don't understand something, you find a bug or just interested: you can write me on discord (kornel.fab)
+
+(I just realized documentaton writing is actually harder than coding)

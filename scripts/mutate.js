@@ -1,5 +1,4 @@
 function generate2DarryFromCells(cells) {
-    console.log(cells)
     let maxWidth = 0;
     let maxHeight = 0;
     for (let i = 0; i < cells.length; i++) {

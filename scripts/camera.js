@@ -26,6 +26,7 @@ class Camera {
             } else {
                 this.x = this.spectate.nucleusLoc.x * UNIT - canvasXsize / 2;
                 this.y = this.spectate.nucleusLoc.y * UNIT - canvasYsize / 2;
+                if(keys.w || keys.a || keys.s || keys.d) this.spectate = undefined;
             }
         }
     }

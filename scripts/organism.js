@@ -1,3 +1,41 @@
+
+var game = {
+    collide: function (array, obj, returntype, filter) { //compare all the object collisions in the given array with the given objects
+        let a = false; //detected collision
+        let collides = []; //used in multiple collision detection
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] === obj) continue;
+            if (array[i].type == "camera") continue;
+            if (array[i].scene != obj.scene && obj.scene !== undefined) {
+                continue;
+            }
+            if (array[i].canCollide == false) continue;
+            if (checkAABBCollision(obj, array[i])) {
+                if (returntype == "boo") {
+                    if (obj.constructor.name == "virus") {
+
+                    }
+                    return true;
+                }; //Is collided with anything?
+                if (returntype == "moving" && !array[i].collectable) return true;
+                if (returntype == "object") return array[i]; //What is this colliding?
+                if ((returntype == "objectsorted" && array[i][filter.property] == filter.value) && array[i][filter.property] !== undefined) return array[i];
+                if (returntype == "multi") collides.unshift(array[i]);  //What is this colliding? (return the array of collided objects)
+                if ((returntype == "sorted" && array[i][filter.property] == filter.value) && array[i][filter.property] !== undefined) return true; //The collided object has the filtered property with value?
+            } else {
+                if (returntype == "boo") //return false;
+                    if (returntype == "object" || returntype == "sorted") {
+                        //console.error(new ReferenceError("Warning! Can not return object from collide when not overlap. Try another return type. Actual return type: " + returntype + " -> returned false"));
+                        //return false;
+                    }
+            }
+        }
+        if (returntype == "multi") {
+            return collides;
+        }
+        return false;
+    },
+}
 function fix2(num) {
     return Math.round(num * 10) / 10
 }
@@ -18,7 +56,7 @@ function collideCellIndex(cell, array, organism) {
         if (organism == array[i]) continue;
         for (let i2 = 0; i2 < array[i].cells.length; i2++) {
             if (checkAABBCollision(cell, array[i].cells[i2]) && cell.age > 50 && array[i].cells[i2].age > 50) {
-                return {arrInd: i, cellInd: i2};
+                return { arrInd: i, cellInd: i2 };
             }
         }
     }
@@ -39,6 +77,14 @@ class Organism {
         this.nucleusLoc = { x: 0, y: 0 }
         this.brain = [];
         this.moveDirect = { x: 0, y: 0 };
+        this.sensorContain = function (array, element) {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i].x == element.x && array[i].y == element.y) {
+                    return true;
+                }
+            }
+            return false;
+        }
         this.start = () => {
             for (let i = 0; i < this.cells.length; i++) {
                 if (this.cells[i].name == "nucleus") {
@@ -53,27 +99,26 @@ class Organism {
             }
         }
         this.update = () => {
-            for(let i = 0; i < this.cells.length; i++) {
+            for (let i = 0; i < this.cells.length; i++) {
                 this.energy -= 0.22;
-                if(this.cells[i].age > 10000) {
-                    this.cells.splice(i, 1)
+                if (this.cells[i].age > 10000) {
+                    //this.cells.splice(i, 1)
                 }
             }
             if (this.energy < 5 || this.energy > 10000) {
-                for(let i = 0; i < this.cells.length; i++) {
+                for (let i = 0; i < this.cells.length; i++) {
                     plants.unshift(new Plant(this.cells[i].x, this.cells[i].y, 0.5));
                 }
                 organisms.splice(organisms.indexOf(this), 1);
             }
             let alive = false;
-            for(let i = 0; i < this.cells.length; i++) {
-                if(this.cells[i].name == "nucleus") {
+            for (let i = 0; i < this.cells.length; i++) {
+                if (this.cells[i].name == "nucleus") {
                     alive = true;
                 }
             }
-            if(!alive) {
-                console.log("cell killed. because nucleus not found")
-                for(let i = 0; i < this.cells.length; i++) {
+            if (!alive) {
+                for (let i = 0; i < this.cells.length; i++) {
                     plants.unshift(new Plant(this.cells[i].x, this.cells[i].y, 0.5));
                 }
                 organisms.splice(organisms.indexOf(this), 1);
@@ -88,6 +133,54 @@ class Organism {
             for (let i = 0; i < this.cells.length; i++) {
                 this.cells[i].x = fix2(this.cells[i].x);
                 this.cells[i].y = fix2(this.cells[i].y);
+            }
+            //check cell groups
+            let removede = 0;
+            let startingLocX = null;
+            let longMap = [];
+
+            let sensored = [];
+            let removedNears = null;
+            let startingLocY = 0;
+            if (this.removedCell != null) {
+                var cellGroups = [];
+                removedNears = this.removedCell.getAllNear();
+                for (let i = 0; i < removedNears.length; i++) {
+                    if (game.collide(this.cells, removedNears[i], "boo")) {
+                        cellGroups.unshift([game.collide(this.cells, removedNears[i], "object")]);
+                    }
+                }
+                let numu = 0;
+                let a = (root, cell) => {
+                    let anears = cell.getAllNear();
+                    for (let i = 0; i < anears.length; i++) {
+                        if (game.collide(this.cells, anears[i], "boo") && !this.sensorContain(sensored, game.collide(this.cells, anears[i], "object")) && !this.sensorContain(root, game.collide(this.cells, anears[i], "object"))) {
+                            root.unshift(game.collide(this.cells, anears[i], "object"));
+                            sensored.unshift(game.collide(this.cells, anears[i], "object"));
+                            a(root, game.collide(this.cells, anears[i], "object"));
+                        }
+                    }
+                }
+                for (let i = 0; i < cellGroups.length; i++) {
+                    a(cellGroups[i], cellGroups[i][0]);
+                }
+                for (let i = 0; i < cellGroups.length; i++) {
+                    longMap.push(cellGroups[i].length)
+                }
+                let still = cellGroups[longMap.indexOf(Math.max(...longMap))];
+                let removeded = 0;
+                for (let i = 0; i < cellGroups.length; i++) {
+                    if (cellGroups[i - removeded] != still) {
+                        cellGroups.splice(i - removeded, 1);
+                        removeded++;
+                    }
+                }
+                if (cellGroups[0] !== undefined) {
+                    this.cells = cellGroups[0];
+                    this.groupDebug = cellGroups;
+                    this.removedCell = null;
+                }
+
             }
             //check it is it th organism complate
             var a = false;
@@ -118,7 +211,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y - 1 == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y - 1, age: 1000 }, organisms, this)) {
-                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y - 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -133,7 +226,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x + 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x + 1, y: builtCell.y, age: 1000 }, organisms, this)) {
-                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x + 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -148,7 +241,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y + 1 == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y + 1, age: 1000 }, organisms, this)) {
-                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y + 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -162,7 +255,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x - 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x - 1, y: builtCell.y, age: 1000 }, organisms, this)) {
-                                    if(this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x - 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);

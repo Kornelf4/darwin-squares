@@ -39,6 +39,26 @@ class Cell {
             }
 
         }
+        this.getAllNear = () => {
+            let a = [];
+            //Up
+            a.unshift({
+                x: this.x, y: this.y - 1, xsize: 1, ysize: 1, active: false
+            });
+            //Down
+            a.unshift({
+                x: this.x, y: this.y + 1, xsize: 1, ysize: 1, active: false,
+            })
+            //Left
+            a.unshift({
+                x: this.x - 1, y: this.y, xsize: 1, ysize: 1, active: false,
+            })
+            //Right
+            a.unshift({
+                x: this.x + 1, y: this.y, xsize: 1, ysize: 1, active: false,
+            });
+            return a;
+        }
     }
 }
 class Nucleus extends Cell {
@@ -257,6 +277,7 @@ class Eater extends Cell {
                     if(organisms[res.arrInd].cells[res.cellInd].name == "reproduction") continue;
                     if (typeof res === "object") {
                         this.timer = 0;
+                        organisms[res.arrInd].removedCell = organisms[res.arrInd].cells[res.cellInd];
                         organisms[res.arrInd].cells.splice(res.cellInd, 1);
                         parent.energy += this.energyGet;
                         systems.unshift(
@@ -291,7 +312,6 @@ class Eater extends Cell {
                                 ),
                             ])
                         )
-                        console.log("system added")
                     }
                 }
             }

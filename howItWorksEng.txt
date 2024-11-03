@@ -8,17 +8,17 @@ Credits:
 
 What is this?
     This is a zero player game made for the PROCJAM 2024
-    This is a multicellural ecosystem simulator, maybe an experiment. Shows the signals of evolution and natural selection.
+    This is a multicellural ecosystem simulator, like an experiment. Shows the process of evolution and natural selection.
 
 How it's made?
-    This game is made by me (Kornelf) in a week, and the music is made by Mario Alexander.
+    This game is made by me (kornelf) in a week, and the music is made by Mario Alexander, the artwork by fefe.
     I used plain JavaScript (canvas drawing) to make this. All assets and code are made on the jam.
     It's open source: https://github.com/Kornelf4/darwin-squares
 
 How it WORKS?
     Good question. I'll try to explain.
 
-    On the surface of the sphere are separate systems, each with its own set of rules. In what follows I will call them organisms.
+    On the surface of a sphere are separate systems, each with its own set of rules. In what follows I will call them organisms.
     I will later call the organisms' systems of rules behaviour or brains.
 
     So what does an organism consist of?
@@ -46,12 +46,12 @@ How it WORKS?
             Membrane: the organism's organ of nutrition. It can take up nutrients (small green squares) to obtain energy
                 out: 1.
                 in: anything (irrelevant)
-            Whip: organ of locomotion of the organism. If there are more of them, the organism moves towards the sum of the movement times. It uses little energy and requires a signal.
+            Whip: organ of locomotion of the organism. If there are more of them, the organism moves towards the sum of the movement vectors. It uses little energy and requires a signal.
                 out: 0
                 in: target speed
 
         Secondary:
-            Digestive eater: eats nearby cells of other organisms on contact. It then produces significant energy for the organism. Vomits signal.
+            Digestive eater: eats nearby cells of other organisms on contact. It then produces significant energy for the organism. Requires signal.
                 out: 0
                 in: Does it destroy other cells (if it can) 1: yes, 0: no
             Adder: logic cell. It adds up the incoming signals and takes its value.
@@ -60,10 +60,10 @@ How it WORKS?
             Cell sensor (Eye): one-way cell. Takes the distance of the nearest cell in one direction, from 0 to 1. Range of view 10 cells
                 out: the distance of the nearest cell in a given direction, 0 to 1. 0 directly in front of the cell, 1 out of line of sight
                 in: anything (irrelevant)
-            Not: logical cell. It then inverts the rounded incoming signals and takes the value. For example, if 1 is received, it takes a value of 0.
+            Not: logical cell. It inverts the rounded incoming signals and takes the value. For example, if 1 is received, it takes a value of 0.
                 out: For example, if 1 is received, it takes a value of 0
                 in: anything
-            Plant sensor (eye): similar to the cell sensor, except that it does not detect cells, but the plant nut.
+            Plant sensor (eye): similar to the cell sensor, except that it does not detect cells, but the plant nutrion.
                 out: the distance of the nearest nutrient in the given direction, between 0 and 1. 0 directly in front of the cell, 1 out of sight
                 in: anything (irrelevant)
             Random: logical cell. 0 and 1 take a random value manually.

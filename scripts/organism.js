@@ -100,7 +100,7 @@ class Organism {
         }
         this.update = () => {
             for (let i = 0; i < this.cells.length; i++) {
-                this.energy -= 0.22;
+                this.energy -= 0.125;
                 if (this.cells[i].age > 10000) {
                     //this.cells.splice(i, 1)
                 }
@@ -277,7 +277,7 @@ class Organism {
                 for (let i2 = 0; i2 < plants.length; i2++) {
                     if (plants[i2] === undefined) continue;
                     if (checkAABBCollision(this.cells[i], plants[i2]) && this.cells[i].name == "membran") {
-                        this.energy += (cellCost * 6 + cellCost * 5) / 2;
+                        this.energy += cellCost * 3;
                         plants.splice(i2, 1)
                     }
                 }

@@ -26,9 +26,10 @@ var timeColor = 255;
 var timePart = "day";
 var musicAudio = new Audio("audio/game.mp3");
 var bubble = new Audio("audio/bubbles.wav");
+var buttonSound = new Audio("audio/aceptar.wav");
+musicAudio.loop = true;
 var bubbleTimer = 0;
 var bubbleEnabled = false;
-musicAudio.loop = true;
 var organisms = [
 ];
 var plants = [];
@@ -60,6 +61,7 @@ function killHalf() {
             organisms.splice(i, 1)
         }
     }
+    buttonSound.play();
 }
 function killHalfPlant() {
     for (let i = 0; i < plants.length; i++) {
@@ -68,6 +70,7 @@ function killHalfPlant() {
             plants.splice(i, 1)
         }
     }
+    buttonSound.play();
 }
 
 function generate2DArray(rows, columns, fill) {
@@ -206,6 +209,7 @@ function setSpeed(e) {
 function spectate() {
     let randomOrg = organisms[randomNumber(0, organisms.length - 1)];
     camera.spectate = randomOrg;
+    buttonSound.play();
 }
 
 function setMusic(elem) {
@@ -216,3 +220,25 @@ function setMusic(elem) {
 }
 
 start()
+
+/*musicAudio.addEventListener("ended", function(){
+    musicAudio.currentTime = 0;
+    if(musicAudio.src == "audio/game.mp3") {
+        musicAudio.src = "audio/game2.wav";
+    } else {
+        musicAudio.src = "audio/game.mp3";
+    }
+    musicAudio.play();
+});*/
+function unitAdd() {
+    UNIT += 5;
+    buttonSound.play();
+}
+function unitMin() {
+    UNIT -= 5;
+    buttonSound.play();
+}
+function setRunning() {
+    isRunning = !isRunning;
+    buttonSound.play();
+}

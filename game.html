@@ -32,9 +32,9 @@
     </div>
     <div class="sizer">
         <div class="inlineContainer">
-            <input type="button" value="-" onclick="UNIT -= 5"><input type="button" value="+" onclick="UNIT += 5">
+            <input type="button" value="-" onclick="unitMin()"><input type="button" value="+" onclick="unitAdd()">
             <input type="button" value="Spectate organism" onclick="spectate()"><br>
-            <input type="button" onclick="isRunning = !isRunning" value="Start/Stop Simulation"><br>
+            <input type="button" onclick="setRunning()" value="Start/Stop Simulation"><br>
             <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
             <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
         </div>

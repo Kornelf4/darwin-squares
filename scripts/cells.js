@@ -157,8 +157,8 @@ class PhotoCell extends Cell {
         this.update = (parent) => {
             this.time++;
             let sunRate = Math.abs(time - dayLength / 2) * 2;
-            if (!collideCell(this, organisms, parent) && this.time > 30) {
-                parent.energy += (sunRate / 5500 + 0.06) * 25;
+            if (!collideCell(this, organisms, parent) && this.time > 25) {
+                parent.energy += (sunRate / dayLength) * cellCost * 5;
                 this.time = 0;
             }
             this.value = sunRate / dayLength;
@@ -205,9 +205,9 @@ class Reproduction extends Cell {
         this.update = (parent) => {
             this.time++;
             if (this.activationLevel === undefined) return;
-            if (this.time < 150) return;
+            if (this.time < randomNumber(100, 200)) return;
             //if(Math.round(this.activationLevel) == 0) return;
-            if (parent.energy < cellCost * 6 * 0.7 + randomNumber(4, 10)) return;
+            if (parent.energy < mutateBlueprint(parent.blueprintGenes).length * cellCost + randomNumber(4, 10)) return;
             let targetLoc = { x: JSON.parse(JSON.stringify(this.x)), y: JSON.parse(JSON.stringify(this.y)) }
             if(collideCell(this, organisms, parent)) return;
             for (let i = 0; i < 4; i++) {
@@ -222,13 +222,13 @@ class Reproduction extends Cell {
                 }
 
                 if (collideCell({x: targetLoc.x, y: targetLoc.y, age: 1000}, organisms, parent)) continue;
-                organisms.unshift(new Organism(this.x, this.y, [], mutateBlueprint(parent.blueprintGenes), (cellCost * 6 * 0.5) * 8.5, mutateBrain(parent.connectGenes, parent.blueprintGenes)));
+                organisms.unshift(new Organism(this.x, this.y, [], mutateBlueprint(parent.blueprintGenes), mutateBlueprint(parent.blueprintGenes).length * cellCost * 1.5, mutateBrain(parent.connectGenes, parent.blueprintGenes)));
                 organisms[0].addCell(new Nucleus(targetLoc.x, targetLoc.y));
                 organisms[0].start();
                 break;
             }
             this.time = 0;
-            parent.energy -= cellCost * 6 * 0.7;
+            parent.energy -= mutateBlueprint(parent.blueprintGenes).length * cellCost;
         }
         this.start = (parent) => {
             parent.brain.unshift(new BrainNode([], this, "toCellOutputter", null, "Reproduct Input Node"));
@@ -262,7 +262,7 @@ class Eater extends Cell {
         this.timer = 0;
         this.activationLevel = 0;
         this.targetLoc = {}
-        this.energyGet = cellCost * (3 / 4) * 8;
+        this.energyGet = cellCost * 4;
         this.update = (parent) => {
             this.timer++;
             if (this.timer > 100 && Math.round(this.activationLevel) == 1) {

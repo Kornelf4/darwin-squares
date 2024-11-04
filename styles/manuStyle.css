@@ -68,3 +68,24 @@ body {
     transition-duration: 100ms;
     margin-top: 30%;
 }
+
+.btn3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #e0c62f;
+    color: white;
+    font-size: 32px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 100ms;
+    margin-top: 23%;
+}
+.btn3:hover {
+    background-color: #9fe02f;
+}

@@ -1,1 +1,1 @@
-See how it works.pdf
+See howItWorks.pdf

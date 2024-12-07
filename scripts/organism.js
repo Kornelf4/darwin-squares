@@ -100,9 +100,11 @@ class Organism {
         }
         this.update = () => {
             for (let i = 0; i < this.cells.length; i++) {
-                this.energy -= 0.125;
-                if (this.cells[i].age > 10000) {
-                    //this.cells.splice(i, 1)
+                if(!isNaN(parseFloat(document.getElementById("sm").value))) {
+                    this.energy -= 0.125 * parseFloat(document.getElementById("sm").value);
+                }
+                if (this.cells[i].age > 15000) {
+                    this.cells.splice(i, 1)
                 }
             }
             if (this.energy < 5 || this.energy > 10000) {

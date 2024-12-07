@@ -174,7 +174,7 @@ function tick() {
         }
         //console.log(timeColor)
         canvas.style["background-color"] = `rgb(${timeColor}, ${timeColor}, ${timeColor})`;
-        if (COUNTER % 3 == 0) {
+        if (COUNTER % parseInt(document.getElementById("foodDelay").value) == 0) {
             addPlants();
         }
         updateOrganisms();

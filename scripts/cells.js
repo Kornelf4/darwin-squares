@@ -158,8 +158,11 @@ class PhotoCell extends Cell {
             this.time++;
             let sunRate = Math.abs(time - dayLength / 2) * 2;
             if (!collideCell(this, organisms, parent) && this.time > 25) {
-                parent.energy += (sunRate / dayLength) * cellCost * 5;
-                this.time = 0;
+                if(!isNaN(parseFloat(document.getElementById("sunM").value))) {
+                    parent.energy += (sunRate / dayLength) * cellCost * 5 * parseFloat(document.getElementById("sunM").value);
+                    this.time = 0;
+                }
+                
             }
             this.value = sunRate / dayLength;
         }
@@ -277,9 +280,10 @@ class Eater extends Cell {
                     if(organisms[res.arrInd].cells[res.cellInd].name == "reproduction") continue;
                     if (typeof res === "object") {
                         this.timer = 0;
+                        if(isNaN(parseFloat(document.getElementById("pm").value))) continue;
                         organisms[res.arrInd].removedCell = organisms[res.arrInd].cells[res.cellInd];
                         organisms[res.arrInd].cells.splice(res.cellInd, 1);
-                        parent.energy += this.energyGet;
+                        parent.energy += this.energyGet * parseFloat(document.getElementById("pm").value);
                         systems.unshift(
                             new ParticleSystem([
                                 new ParticleEmitter(

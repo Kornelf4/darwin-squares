@@ -2,7 +2,7 @@ class Camera {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.cameraSpeed = 10
+        this.cameraSpeed = 10;
         this.getRelativeX = (x) => {
             return x - this.x;
         }

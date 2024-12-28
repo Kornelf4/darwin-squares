@@ -34,7 +34,7 @@ function mutateBlueprint(blueprint) {
     let result = [...blueprint];
     if (randomNumber(0, 20) < mutationRate2) {
         for (let i = 0; i < blueprint.length; i++) {
-            if (randomNumber(0, 20) < mutationRate) {
+            if (randomNumber(0, 15) < mutationRate) {
                 let addHeading = randomNumber(0, 3);
                 let targetLoc = { x: JSON.parse(JSON.stringify(blueprint[i].x)), y: JSON.parse(JSON.stringify(blueprint[i].y)) };
                 let randomCelltype = cellTypes[randomNumber(0, cellTypes.length - 1)];
@@ -53,15 +53,21 @@ function mutateBlueprint(blueprint) {
     }
     if (randomNumber(0, 20) < mutationRate2) {
         for (let i = 0; i < result.length; i++) {
-            if (randomNumber(0, 20) < mutationRate) {
+            if (randomNumber(0, 15) < mutationRate) {
                 let randomCelltype = cellTypes[randomNumber(0, cellTypes.length - 1)];
                 if (result[i].inst != Reproduction) {
                     result[i].inst = randomCelltype;
                 }
             }
-            if (randomNumber(0, 20) < mutationRate) {
+            if (randomNumber(0, 15) < mutationRate) {
                 result[i].heading = randomNumber(0, 3)
             }
+        }
+    }
+    if (randomNumber(0, 55) < mutationRate2) {
+        let num = randomNumber(1, 2);
+        for(let i = 0; i < num; i++) {
+            result.splice(randomNumber(0, result.length - 1), 1);
         }
     }
     return result;
@@ -70,7 +76,7 @@ function mutateBlueprint(blueprint) {
 function mutateBrain(connections, blueprint) {
     let result = [...connections];
     for (let i = 0; i < result.length; i++) {
-        if (randomNumber(0, 27) < mutationRate) {
+        if (randomNumber(0, 18) < mutationRate) {
             if (result[i].type == "cell-cell")
                 var randomBlock = blueprint[randomNumber(0, blueprint.length - 1)];
             if (randomBlock.x == result[i].from.x && randomBlock.y == result[i].from.y) {
@@ -80,11 +86,17 @@ function mutateBrain(connections, blueprint) {
             result[i].to.y = randomBlock.y;
         }
     }
-    if (randomNumber(0, 27) < mutationRate) {
+    if (randomNumber(0, 10) < mutationRate) {
         let random1 = randomNumber(0, blueprint.length - 1);
         let random2 = randomNumber(0, blueprint.length - 1);
         if (random1 == random2) return result;
         result.unshift({ type: "cell-cell", from: { x: blueprint[random1].x, y: blueprint[random1].y }, to: { x: blueprint[random2].x, y: blueprint[random2].y } })
+    }
+    if(randomNumber(0, 55) < mutationRate) {
+        let num = randomNumber(1, 2);
+        for(let i = 0; i < num; i++) {
+            result.splice(randomNumber(0, result.length - 1), 1);
+        }
     }
     return result;
 }

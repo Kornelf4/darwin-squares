@@ -132,11 +132,20 @@ class Adder extends Cell {
         this.value = 0;
         this.activationLevel = 0;
         this.update = (parent) => {
-            if (this.activationLevel <= 0) {
+            /*if (this.activationLevel <= 0) {
                 this.value = this.activationLevel;
             } else {
                 this.value = 1;
-            }
+            }*/
+           if(this.activationLevel !== undefined) {
+                this.value = this.activationLevel;
+                if(this.value < 0) {
+                    this.value = 0;
+                }
+                if(this.activationLevel > 1) {
+                    this.value = 1
+                }
+           }
         }
         this.start = (parent) => {
             parent.brain.unshift(new BrainNode([], this, "toCellOutputter", null, "Ligic To system output node"));
@@ -157,16 +166,19 @@ class PhotoCell extends Cell {
         this.update = (parent) => {
             this.time++;
             let sunRate = Math.abs(time - dayLength / 2) * 2;
-            if (!collideCell(this, organisms, parent) && this.time > 25) {
-                if(!isNaN(parseFloat(document.getElementById("sunM").value))) {
-                    parent.energy += (sunRate / dayLength) * cellCost * 5 * parseFloat(document.getElementById("sunM").value);
-                    this.time = 0;
+            if(Math.round(this.activationLevel) >= 1) {
+                if (!collideCell(this, organisms, parent) && this.time > 25) {
+                    if(!isNaN(parseFloat(document.getElementById("sunM").value))) {
+                        parent.energy += (sunRate / dayLength) * cellCost * 5 * parseFloat(document.getElementById("sunM").value);
+                        this.time = 0;
+                    }
                 }
-                
             }
+            
             this.value = sunRate / dayLength;
         }
-        this.start = () => {
+        this.start = (parent) => {
+            parent.brain.unshift(new BrainNode([], this, "toCellOutputter", null, "Whip Input Node"));
         }
     }
 }
@@ -187,6 +199,7 @@ class NotCell extends Cell {
             } else {
                 this.value = 1;
             }
+            this.value = 1 - this.activationLevel;
         }
         this.start = (parent) => {
             parent.brain.unshift(new BrainNode([], this, "toCellOutputter", null, "Ligic To system output node"));
@@ -208,9 +221,9 @@ class Reproduction extends Cell {
         this.update = (parent) => {
             this.time++;
             if (this.activationLevel === undefined) return;
-            if (this.time < randomNumber(100, 200)) return;
+            if (this.time < randomNumber(50, 130)) return;
             //if(Math.round(this.activationLevel) == 0) return;
-            if (parent.energy < mutateBlueprint(parent.blueprintGenes).length * cellCost + randomNumber(4, 10)) return;
+            if (parent.energy * 2 < cellCost * 2 + randomNumber(0, 6)) return;
             let targetLoc = { x: JSON.parse(JSON.stringify(this.x)), y: JSON.parse(JSON.stringify(this.y)) }
             if(collideCell(this, organisms, parent)) return;
             for (let i = 0; i < 4; i++) {
@@ -223,15 +236,14 @@ class Reproduction extends Cell {
                 } else {
                     targetLoc.x -= 1;
                 }
-
                 if (collideCell({x: targetLoc.x, y: targetLoc.y, age: 1000}, organisms, parent)) continue;
-                organisms.unshift(new Organism(this.x, this.y, [], mutateBlueprint(parent.blueprintGenes), mutateBlueprint(parent.blueprintGenes).length * cellCost * 1.5, mutateBrain(parent.connectGenes, parent.blueprintGenes)));
+                organisms.unshift(new Organism(this.x, this.y, [], mutateBlueprint(parent.blueprintGenes), parent.energy / 2, mutateBrain(parent.connectGenes, parent.blueprintGenes)));
                 organisms[0].addCell(new Nucleus(targetLoc.x, targetLoc.y));
                 organisms[0].start();
                 break;
             }
             this.time = 0;
-            parent.energy -= mutateBlueprint(parent.blueprintGenes).length * cellCost;
+            parent.energy -= parent.energy / 2;
         }
         this.start = (parent) => {
             parent.brain.unshift(new BrainNode([], this, "toCellOutputter", null, "Reproduct Input Node"));

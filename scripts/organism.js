@@ -101,7 +101,7 @@ class Organism {
         this.update = () => {
             for (let i = 0; i < this.cells.length; i++) {
                 if(!isNaN(parseFloat(document.getElementById("sm").value))) {
-                    this.energy -= 0.125 * parseFloat(document.getElementById("sm").value);
+                    this.energy -= 0.13 * parseFloat(document.getElementById("sm").value);
                 }
                 if (this.cells[i].age > 15000) {
                     this.cells.splice(i, 1)
@@ -205,7 +205,7 @@ class Organism {
             //build this organism if possible
             let check = (builtCell, heading) => {
                 var scearcHeading = 0;
-                if (this.energy > cellCost + randomNumber(2, cellCost * 10) && !this.complete) {
+                if (!this.complete) {
                     //scearch for buildable blueprint things
                     scearcHeading = heading;
                     if (scearcHeading == 0) {
@@ -213,7 +213,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y - 1 == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y - 1, age: 1000 }, organisms, this)) {
-                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost *3) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y - 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -228,7 +228,8 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x + 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x + 1, y: builtCell.y, age: 1000 }, organisms, this)) {
-                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+
+                                    if (this.energy < cellCost * 3) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x + 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -243,7 +244,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y + 1 == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x, y: builtCell.y + 1, age: 1000 }, organisms, this)) {
-                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost *3) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x, builtCell.y + 1, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -257,7 +258,7 @@ class Organism {
                             if (this.blueprint[i] === undefined) continue;
                             if (builtCell.x - 1 == this.blueprint[i].x + this.nucleusLoc.x && builtCell.y == this.blueprint[i].y + this.nucleusLoc.y) {
                                 if (!collideCell({ x: builtCell.x - 1, y: builtCell.y, age: 1000 }, organisms, this)) {
-                                    if (this.energy < cellCost + randomNumber(4, cellCost * 2)) continue;
+                                    if (this.energy < cellCost *3) continue;
                                     this.cells.unshift(new this.blueprint[i].inst(builtCell.x - 1, builtCell.y, this.blueprint[i].heading));
                                     this.cells[0].start(this);
                                     this.blueprint.splice(i, 1);
@@ -271,7 +272,7 @@ class Organism {
             }
             for (let i = 0; i < this.cells.length; i++) {
                 for (let i2 = 0; i2 < 4; i2++) {
-                    check(this.cells[i], i2);
+                    check(this.cells[i], randomNumber(0, 4));
                 }
             }
             //check plants
@@ -279,7 +280,7 @@ class Organism {
                 for (let i2 = 0; i2 < plants.length; i2++) {
                     if (plants[i2] === undefined) continue;
                     if (checkAABBCollision(this.cells[i], plants[i2]) && this.cells[i].name == "membran") {
-                        this.energy += cellCost * 3;
+                        this.energy += cellCost * 4.5;
                         plants.splice(i2, 1)
                     }
                 }

@@ -33,6 +33,12 @@ input[type="button"]:hover {
     color: black
 }
 
+.inl {
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+}
+
 input[type="button"]:active {
     border-color: antiquewhite;
 }
@@ -66,7 +72,7 @@ input[value="-"] {
     display: flex;
     color: white;
     text-align: center;
-    width: 60%;
+    width: 35%;
     margin: 2%;
     transition-duration: 200ms;
 }
@@ -147,7 +153,7 @@ body {
     display: flexbox;
     justify-content: center;
 }
-.canvass {
+.canvass, #viewCanvas {
     border-radius: 11px;
     border: 5px solid grey
 }
@@ -160,8 +166,18 @@ body {
     border-bottom-right-radius: 0px;
 }
 img {
-    width: 35%;
-    height: 35%;
+    width: 100%;
+    height: 100%;
     margin: 2%;
+}
+#viewCanvas {
+    width: 100%;
+    height: 100%;
+    margin: 2%;
+}
+.imgCanv {
+    display: block;
+    height: max-content;
     float: right;
+    height: 100%;
 }

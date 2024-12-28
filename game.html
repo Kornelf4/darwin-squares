@@ -10,7 +10,18 @@
 
 <body>
     <!--<h1>Darwin Squares. The game without players.</h1>-->
-    <img src="sprites/logo/logo.png">
+    <div class="imgCanv">
+        <img src="sprites/logo/logo.png"><br>
+        <div class="inl">
+            <div class="inlineContainer sizer">
+                <input type="button" value="-" onclick="unitMinv()"><input type="button" value="+" onclick="unitAddv()"><br>
+                <div>
+                    aaa
+                </div>
+            </div>
+            <canvas id="viewCanvas"></canvas>
+        </div>
+    </div>
     <div class="checkboxContainer">
         <div class="smol1">
             Music: <input type="checkbox" id="music" class="check" onclick="setMusic(this)">
@@ -34,15 +45,16 @@
         <div>Predator multiplier: <input type="number" value="1" id="pm"></div><br>
         <div>Size of world: <input type="number" onchange="WORLDSIZE = parseInt(this.value)" value="70"></div><br>
     </div>
-    <div class="sizer">
-        <div class="inlineContainer">
-            <input type="button" value="-" onclick="unitMin()"><input type="button" value="+" onclick="unitAdd()">
-            <input type="button" value="Spectate organism" onclick="spectate()"><br>
-            <input type="button" onclick="setRunning()" value="Start/Stop Simulation"><br>
-            <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
-            <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
-        </div>
-    </div><br>
+    <div class="inlineContainer sizer">
+        <input type="button" value="-" onclick="unitMin()"><input type="button" value="+" onclick="unitAdd()">
+        <input type="button" value="Spectate organism" onclick="spectate()"><br>
+
+    </div>
+    <div class="inlineContainer sizer">
+        <input type="button" onclick="setRunning()" value="Start/Stop Simulation"><br>
+        <input type="button" value="Delete the half of organisms" onclick="killHalf()"> <br>
+        <input type="button" value="Delete the half of food" onclick="killHalfPlant()"><br>
+    </div>
     <div class="canvasCont">
         <div class="canvass canvas2" id="1">
             <canvas id="simCanvas"></canvas>
@@ -66,3 +78,4 @@
 <script src="scripts/collide.js"></script>
 <script src="scripts/main.js"></script>
 <script src="scripts/diagram.js"></script>
+<script src="scripts/view.js"></script>

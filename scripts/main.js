@@ -19,7 +19,8 @@ var mutationRate2 = 5;
 var COUNTER = 0;
 var isRunning = false;
 var cellCost = 5;
-var cellTypes = [PhotoCell, NotCell, MembranCell, Eater, Whip, Eye, Adder, RandomCell, PlantEye, Eye, Eater, Whip, Whip, Whip, Eye, MembranCell, Whip];
+//var cellTypes = [PhotoCell, NotCell, MembranCell, Eater, Whip, Eye, Adder, RandomCell, PlantEye, Eye, Eater, Whip, Whip, Whip, Eye, MembranCell, Whip];
+var cellTypes = [PhotoCell, NotCell, MembranCell, Eater, Eye, Adder, RandomCell, PlantEye, Whip];
 var time = 0;
 var dayLength = 8000;
 var timeColor = 255;
@@ -43,7 +44,7 @@ for (let i = 0; i < 15; i++) {
         { inst: Reproduction, x: -1, y: 0, heading: randomNumber(0, 3) },
         { inst: MembranCell, x: 1, y: 1, heading: randomNumber(0, 3) },
         { inst: MembranCell, x: 1, y: -1, heading: randomNumber(0, 3) },
-    ], 100, [
+    ], 500, [
         { type: "cell-cell", from: { x: 0, y: 0 }, to: { x: -1, y: 0 } },
         { type: "cell-cell", from: { x: 0, y: 0 }, to: { x: 1, y: 0 } }
     ]))
@@ -183,6 +184,8 @@ function tick() {
         //if(graphics) {
             particleTick();
         //}
+        updateView();
+        drawCreature();
     } else {
         if (graphics) {
             ctx.clearRect(0, 0, canvasXsize, canvasYsize);
